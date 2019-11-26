@@ -1,5 +1,5 @@
 import moment from 'moment';
-import retroBoardReducer from './../../reducers/retroboard';
+import retroBoardReducer from '../../reducers/retroBoard';
 import retroBoard from './../fixtures/retroBoard';
 
 test('should set up default values', () => {
@@ -27,6 +27,47 @@ test('should set expenses', () => {
     };
     const state = retroBoardReducer(retroBoardReducerDefault, { type: 'SET_RETRO_BOARD', retroBoard });
     expect(state).toEqual(retroBoard);
+});
+
+test('should be able to edit the title', () => {
+    const retroBoardReducerDefault = {
+        title: 'My Retro Board',
+        wentWell: [],
+        toImprove: [],
+        actionItems: [],
+    };
+    const state = retroBoardReducer(retroBoard, { type: 'ADD_RETRO_BOARD_TITLE', title: 'QTC Dandylions' });
+    expect(state.title).toEqual('QTC Dandylions');
+});
+
+test('should be able to add to wentWell', () => {
+    const post = {
+        id: 'ww4',
+        label: 'successful went well post'
+    };
+    const state = retroBoardReducer(retroBoard, { type: 'ADD_WENT_WELL', wentWell: post });
+    expect(state.wentWell).toHaveLength(4);
+    expect(state.wentWell).toEqual([...retroBoard.wentWell, post]);
+});
+
+test('should be able to add to toImprove', () => {
+    const post = {
+        id: 'tp4',
+        label: 'successful to Improve post'
+    };
+    const state = retroBoardReducer(retroBoard, { type: 'ADD_TO_IMPROVE', toImprove: post });
+    expect(state.toImprove).toHaveLength(4);
+    expect(state.toImprove).toEqual([...retroBoard.toImprove, post]);
+});
+
+test('should be able to add to action items', () => {
+    const post = {
+        id: 'ai4',
+        label: 'successful action item post'
+    };
+    const state = retroBoardReducer(retroBoard, { type: 'ADD_ACTION_ITEM', actionItems: post });
+    expect(state.actionItems).toHaveLength(4);
+    expect(state.actionItems).toEqual([...retroBoard.actionItems, post]);
 });
 
 // test('should be able to remove expense false id', () => {
